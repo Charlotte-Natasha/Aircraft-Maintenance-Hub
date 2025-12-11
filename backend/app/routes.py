@@ -11,7 +11,39 @@ def home():
 
 @api.route("/status")
 def status():
-    return jsonify({"message": "OK"})
+    conn = get_db_connection()
+    try:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+
+            # 1. Total aircraft
+            cur.execute("SELECT COUNT(*) FROM aircraft;")
+            total = cur.fetchone()["count"]
+
+            # 2. Serviceable aircraft
+            cur.execute("SELECT COUNT(*) FROM aircraft WHERE status = 'serviceable';")
+            serviceable = cur.fetchone()["count"]
+
+            # 3. In maintenance
+            cur.execute("SELECT COUNT(*) FROM aircraft WHERE status = 'maintenance';")
+            maintenance = cur.fetchone()["count"]
+
+            # 4. Pending maintenance tasks
+            cur.execute("SELECT COUNT(*) FROM maintenance_tasks WHERE status = 'pending';")
+            pending = cur.fetchone()["count"]
+
+            # 5. Low stock parts
+            cur.execute("SELECT COUNT(*) FROM parts_inventory WHERE quantity < minimum_quantity;")
+            low_stock = cur.fetchone()["count"]
+
+            return jsonify({
+                "total": total,
+                "serviceable": serviceable,
+                "maintenance": maintenance,
+                "pending": pending,
+                "lowStock": low_stock
+            })
+    finally:
+        conn.close()
 
 # --- Aircraft ---
 @api.route("/aircraft")
