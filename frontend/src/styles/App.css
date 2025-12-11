@@ -1,0 +1,378 @@
+:root {
+  /* ==================== NEURO-THEME COLORS ==================== */
+  --primary-bg: #03041c; /* Very dark, almost black blue/indigo */
+  --secondary-bg: #0f1138; /* Slightly lighter dark panel color */
+  
+  --neon-blue: #00ffff; /* Primary highlight color */
+  --neon-blue-light: #4cffff;
+  --neon-blue-dark: #00aaff; 
+  
+  /* Status Colors (Adjusted for neon aesthetic and assigned to specific cards) */
+  --color-total: #00aaff;    /* Light Blue for Total Aircraft */
+  --color-serviceable: #39ff14; /* Neon Green for Serviceable */
+  --color-maintenance: #ffaa00; /* Neon Yellow/Orange for In Maintenance */
+  --color-pending: #9333ea;   /* Neon Purple for Pending Tasks */
+  --color-lowstock: #ff3366;  /* Neon Pink/Red for Low Stock Parts */
+
+  /* Text Colors */
+  --text-primary: #ffffff; 
+  --text-secondary: #aaaaaa; 
+}
+
+/* ==================== Global Reset & Body ==================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Rajdhani', sans-serif; 
+}
+
+body {
+  background-color: var(--primary-bg);
+  min-height: 100vh;
+  color: var(--text-primary);
+  transition: all 0.5s ease;
+}
+
+/* ==================== Container & Typography ==================== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+i, a {
+    color: var(--neon-blue);
+}
+
+/* ==================== Header ==================== */
+.header {
+  background: transparent;
+  padding: 3rem 0 1.5rem;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;   /* stack title and subtitle */
+  align-items: center;      /* horizontal centering */
+  justify-content: center;  /* vertical centering */
+  text-align: center;
+  min-height: 150px;
+}
+
+.header-title {
+  font-size: 3rem;
+  color: var(--text-primary);
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin: 0;
+  text-shadow: 0 0 10px var(--neon-blue-light);
+}
+
+.header-subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-top: 0.5rem;
+}
+
+/* ==================== Status Section ==================== */
+.status-section {
+  padding: 2rem 0;
+}
+
+.status-section h2 {
+  color: var(--neon-blue);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.status-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+/* ==================== Card Styles ==================== */
+.card {
+  background: var(--secondary-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.05); 
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle default border */
+  cursor: default;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  background: #1a1e50; 
+  /* Default subtle glow on hover, overridden by specific status classes */
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); 
+}
+
+.card-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.card-value {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.3rem;
+}
+
+.card-label {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 300;
+}
+
+
+/* ==================== Card Variants with UNIQUE COLORS and NEON HOVER ==================== */
+
+/* 1. TOTAL AIRCRAFT (Light Blue) */
+.card-total .card-icon, .card-total .card-value {
+    color: var(--color-total);
+}
+.card-total:hover {
+    box-shadow: 0 0 25px 5px rgba(0, 170, 255, 0.7); /* Strong Blue Glow */
+}
+.card-total {
+    border-color: rgba(0, 170, 255, 0.5);
+}
+
+/* 2. SERVICEABLE (Neon Green) */
+.card-success .card-icon, .card-success .card-value {
+  color: var(--color-serviceable);
+}
+.card-success:hover {
+    box-shadow: 0 0 25px 5px rgba(57, 255, 20, 0.7); /* Strong Green Glow */
+}
+.card-success {
+    border-color: rgba(57, 255, 20, 0.5);
+}
+
+/* 3. IN MAINTENANCE (Neon Yellow/Orange) */
+.card-maintenance .card-icon, .card-maintenance .card-value {
+  color: var(--color-maintenance);
+}
+.card-maintenance:hover {
+    box-shadow: 0 0 25px 5px rgba(255, 170, 0, 0.7); /* Strong Yellow Glow */
+}
+.card-maintenance {
+    border-color: rgba(255, 170, 0, 0.5);
+}
+
+/* 4. PENDING TASKS (Neon Purple) */
+.card-pending .card-icon, .card-pending .card-value {
+    color: var(--color-pending);
+}
+.card-pending:hover {
+    box-shadow: 0 0 25px 5px rgba(147, 51, 234, 0.7); /* Strong Purple Glow */
+}
+.card-pending {
+    border-color: rgba(147, 51, 234, 0.5);
+}
+
+/* 5. LOW STOCK PARTS (Neon Pink/Red) */
+.card-lowstock .card-icon, .card-lowstock .card-value {
+    color: var(--color-lowstock);
+}
+.card-lowstock:hover {
+    box-shadow: 0 0 25px 5px rgba(255, 51, 102, 0.7); /* Strong Pink Glow */
+}
+.card-lowstock {
+    border-color: rgba(255, 51, 102, 0.5);
+}
+/* Ensure icons have text-shadow for glow effect */
+.card-total .card-icon, .card-success .card-icon, .card-maintenance .card-icon, .card-pending .card-icon, .card-lowstock .card-icon {
+    text-shadow: 0 0 10px currentColor; 
+}
+
+
+/* ==================== Tabs Section ==================== */
+.tabs-section {
+  background: transparent;
+  padding-top: 2rem;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tab {
+  flex: 1;
+  max-width: 250px;
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+  border-bottom: 2px solid transparent;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.tab i {
+    margin-right: 8px;
+    color: inherit;
+}
+
+.tab:hover {
+  color: var(--neon-blue-light);
+}
+
+.tab.active {
+  color: var(--neon-blue);
+  border-bottom-color: var(--neon-blue);
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+}
+
+/* ==================== Content Section ==================== */
+.content-section {
+  background: transparent;
+  min-height: 500px;
+  padding: 2rem 0;
+}
+
+.content-title {
+  color: var(--neon-blue);
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+}
+
+/* ==================== Action Button ==================== */
+.btn-primary {
+    background-color: var(--color-serviceable); /* Neon Green for primary action */
+    color: var(--primary-bg);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px; 
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+    float: right; 
+    text-transform: uppercase;
+    box-shadow: 0 0 10px rgba(57, 255, 20, 0.5); 
+}
+
+.btn-primary:hover {
+    background-color: #30e510;
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(57, 255, 20, 0.8);
+}
+
+/* Clear float after button */
+.content-section::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* ==================== Table Styles ==================== */
+.table-container {
+  overflow-x: auto;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+  margin-top: 1rem;
+  background: rgba(0, 0, 0, 0.2); 
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table thead {
+  background: var(--secondary-bg);
+  color: var(--neon-blue);
+}
+
+.data-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+.data-table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.3s ease;
+}
+
+.data-table tbody tr:nth-child(even) {
+  background: rgba(0, 0, 0, 0.1); 
+}
+
+.data-table tbody tr:hover {
+  background: rgba(0, 255, 255, 0.1); 
+}
+
+.data-table td {
+  padding: 1rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+/* ==================== Status Tags in Table ==================== */
+.status-tag {
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    border-radius: 2px; 
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: none;
+    border: 1px solid;
+    color: currentColor;
+    box-shadow: 0 0 5px currentColor;
+}
+
+.tag-success {
+    color: var(--color-serviceable);
+    border-color: var(--color-serviceable);
+}
+
+.tag-warning { /* Used for Maintenance Status in the table */
+    color: var(--color-maintenance);
+    border-color: var(--color-maintenance);
+}
+
+.tag-danger {
+    color: var(--color-lowstock);
+    border-color: var(--color-lowstock);
+}
+
+/* ==================== Footer ==================== */
+.footer {
+  background: transparent;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 1.5rem 0;
+  margin-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
