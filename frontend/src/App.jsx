@@ -13,7 +13,6 @@ function App() {
       <Header/>
       <StatusCards/>
       <Tabs/>
-      <AircraftTable/>
       <Footer/>
     </div>
   );

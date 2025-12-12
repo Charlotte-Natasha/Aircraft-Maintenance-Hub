@@ -46,7 +46,7 @@ def status():
         conn.close()
 
 # --- Aircraft ---
-@api.route("/aircraft")
+@api.route("/aircraft", strict_slashes=False)
 def get_aircraft():
     conn = get_db_connection()
     try:
@@ -69,7 +69,7 @@ def get_aircraft():
         conn.close()
 
 # --- Maintenance Tasks ---
-@api.route("/tasks")
+@api.route("/tasks", strict_slashes=False)
 def get_tasks():
     conn = get_db_connection()
     try:

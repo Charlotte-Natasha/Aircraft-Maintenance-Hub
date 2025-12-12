@@ -1,52 +1,51 @@
-import React from 'react';
+import { useEffect, useState } from "react";
 
 function AircraftTable() {
+  const [aircraft, setAircraft] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchAircraft() {
+      try {
+        const response = await fetch("http://localhost:8000/aircraft");
+        const data = await response.json();
+        setAircraft(data.aircraft); // <-- use data.aircraft, not data
+      } catch (error) {
+        console.error("Error fetching aircraft:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchAircraft();
+  }, []);
+
+  if (loading) return <p>Loading aircraft...</p>;
+
   return (
-    <div className="table-container">
-      <table className="data-table">
-        <thead>
-          <tr>
-            <th>Tail Number</th>
-            <th>Model</th>
-            <th>Manufacturer</th>
-            <th>Total Hours</th>
-            <th>Total Cycles</th>
-            <th>Status</th>
-            <th>Last Inspection</th>
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>Registration</th>
+          <th>Manufacturer</th>
+          <th>Model</th>
+          <th>Total Hours</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {aircraft.map((ac) => (
+          <tr key={ac.id}>
+            <td>{ac.tail_number}</td>
+            <td>{ac.manufacturer}</td>
+            <td>{ac.model}</td>
+            <td>{ac.total_hours}</td>
+            <td>{ac.status}</td>
           </tr>
-        </thead>
-        <tbody>
-          {/* Placeholder rows */}
-          <tr>
-            <td>N12345</td>
-            <td>Boeing 737-800</td>
-            <td>Boeing</td>
-            <td>15,234</td>
-            <td>8,456</td>
-            <td>Serviceable</td>
-            <td>2025-11-15</td>
-          </tr>
-          <tr>
-            <td>N67890</td>
-            <td>Airbus A320</td>
-            <td>Airbus</td>
-            <td>22,100</td>
-            <td>11,234</td>
-            <td>Maintenance</td>
-            <td>2025-10-20</td>
-          </tr>
-          <tr>
-            <td>N11111</td>
-            <td>Boeing 777-300ER</td>
-            <td>Boeing</td>
-            <td>45,678</td>
-            <td>12,345</td>
-            <td>Serviceable</td>
-            <td>2025-11-01</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+        ))}
+      </tbody>
+    </table>
   );
 }
 
