@@ -76,16 +76,16 @@ INSERT INTO aircraft (tail_number, model, manufacturer, total_hours, total_cycle
 
 -- Insert Sample Maintenance Tasks
 INSERT INTO maintenance_tasks (aircraft_id, task_type, description, status, priority, scheduled_date, mechanic_name) VALUES
-(1, 'A-Check', 'Routine inspection due at 15500 hours', 'pending', 'high', '2025-12-15', NULL),
+(1, 'A-Check', 'Routine inspection due at 15500 hours', 'pending', 'high', '2025-12-15', 'David Kimani'),
 (2, 'Engine Overhaul', 'Left engine requires major inspection', 'in_progress', 'critical', '2025-12-01', 'Charlotte Onyango'),
 (3, 'B-Check', 'Scheduled heavy maintenance', 'pending', 'medium', '2025-01-10', NULL),
 (1, 'Landing Gear Service', 'Annual landing gear inspection', 'pending', 'medium', '2025-12-20', NULL),
 (4, 'Avionics Update', 'Software update for navigation system', 'completed', 'low', '2025-11-28', 'Jean Paul'),
 (5, 'Structural Inspection', 'Fuselage crack inspection', 'in_progress', 'critical', '2025-12-05', 'Lydia Mwangi'),
-(6, 'Oil Change', 'Engine oil and filter replacement', 'pending', 'low', '2025-12-18', NULL),
+(6, 'Oil Change', 'Engine oil and filter replacement', 'pending', 'low', '2025-12-18', 'Michael Otieno'),
 (7, 'Tire Replacement', 'Replace worn main gear tires', 'pending', 'high', '2025-12-12', NULL),
 (8, 'Hydraulic System', 'Hydraulic fluid leak repair', 'in_progress', 'high', '2025-12-03', 'David Kimani'),
-(9, 'Cabin Interior', 'Refurbish cabin seats and panels', 'pending', 'medium', '2025-01-15', NULL);
+(9, 'Cabin Interior', 'Refurbish cabin seats and panels', 'pending', 'medium', '2025-01-15', 'Michael Otieno');
 
 -- Insert Sample Parts
 INSERT INTO parts_inventory (part_number, part_name, part_category, quantity, minimum_quantity, unit_price, location) VALUES
@@ -102,16 +102,16 @@ INSERT INTO parts_inventory (part_number, part_name, part_category, quantity, mi
 
 -- Insert Sample Maintenance Logs
 INSERT INTO maintenance_logs (aircraft_id, task_id, description, log_type, mechanic_signature) VALUES
-(1, 1, 'Routine inspection due at 15500 hours', 'inspection', NULL),
+(1, 1, 'Routine inspection due at 15500 hours', 'inspection', 'David Kimani'),
 (2, 2, 'Left engine requires major inspection', 'repair', 'Charlotte Onyango'),
 (3, 3, 'Scheduled heavy maintenance', 'inspection', NULL),
-(1, 4, 'Annual landing gear inspection', 'inspection', NULL),
+(1, 4, 'Annual landing gear inspection', 'inspection', 'Michael Otieno'),
 (4, 5, 'Software update for navigation system', 'update', 'Jean Paul'),
 (5, 6, 'Fuselage crack inspection', 'inspection', 'Lydia Mwangi'),
 (6, 7, 'Engine oil and filter replacement', 'service', NULL),
-(7, 8, 'Replace worn main gear tires', 'repair', NULL),
+(7, 8, 'Replace worn main gear tires', 'repair', 'Charlotte Onyango'),
 (8, 9, 'Hydraulic fluid leak repair', 'repair', 'David Kimani'),
-(9, NULL, 'Refurbish cabin seats and panels', 'service', NULL);
+(9, NULL, 'Refurbish cabin seats and panels', 'service', 'Michael Otieno');
 
 -- Indexes
 CREATE INDEX idx_aircraft_status ON aircraft(status);

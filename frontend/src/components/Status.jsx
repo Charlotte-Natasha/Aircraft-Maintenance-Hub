@@ -10,7 +10,7 @@ function StatusCards() {
   });
 
   useEffect(() => {
-    fetch("http://localhost:8000/status") // your API route
+    fetch("http://localhost:8000/items/counts") // your API route
       .then((res) => res.json())
       .then((resData) => setData(resData))
       .catch((err) => console.error(err));

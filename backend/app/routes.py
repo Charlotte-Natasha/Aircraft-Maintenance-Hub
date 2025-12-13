@@ -4,34 +4,43 @@ from psycopg2.extras import RealDictCursor
 
 api = Blueprint("api", __name__)
 
-# --- Home & Status ---
+# -----------------
+# Home & Status
+# -----------------
 @api.route("/")
 def home():
     return jsonify({"message": "Welcome to the Aircraft Maintenance API"})
 
 @api.route("/status")
 def status():
+    return jsonify({"message": "OK"})
+
+# -----------------
+# Items Summary (counts)
+# -----------------
+@api.route("/items/counts")
+def get_item_counts():
     conn = get_db_connection()
     try:
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
 
-            # 1. Total aircraft
+            # Total aircraft
             cur.execute("SELECT COUNT(*) FROM aircraft;")
             total = cur.fetchone()["count"]
 
-            # 2. Serviceable aircraft
-            cur.execute("SELECT COUNT(*) FROM aircraft WHERE status = 'serviceable';")
+            # Serviceable aircraft
+            cur.execute("SELECT COUNT(*) FROM aircraft WHERE status='serviceable';")
             serviceable = cur.fetchone()["count"]
 
-            # 3. In maintenance
-            cur.execute("SELECT COUNT(*) FROM aircraft WHERE status = 'maintenance';")
+            # In maintenance
+            cur.execute("SELECT COUNT(*) FROM aircraft WHERE status='maintenance';")
             maintenance = cur.fetchone()["count"]
 
-            # 4. Pending maintenance tasks
-            cur.execute("SELECT COUNT(*) FROM maintenance_tasks WHERE status = 'pending';")
+            # Pending maintenance tasks
+            cur.execute("SELECT COUNT(*) FROM maintenance_tasks WHERE status='pending';")
             pending = cur.fetchone()["count"]
 
-            # 5. Low stock parts
+            # Low stock parts
             cur.execute("SELECT COUNT(*) FROM parts_inventory WHERE quantity < minimum_quantity;")
             low_stock = cur.fetchone()["count"]
 
@@ -45,21 +54,36 @@ def status():
     finally:
         conn.close()
 
-# --- Aircraft ---
+# -----------------
+# Parts Inventory (full items list)
+# -----------------
+@api.route("/items")
+def get_items():
+    conn = get_db_connection()
+    try:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute("""
+                SELECT id, part_number, part_name, part_category, quantity,
+                       minimum_quantity, unit_price, location, expiry_date
+                FROM parts_inventory
+                ORDER BY id;
+            """)
+            rows = cur.fetchall()
+            return jsonify({"items": rows})
+    finally:
+        conn.close()
+
+# -----------------
+# Aircraft
+# -----------------
 @api.route("/aircraft", strict_slashes=False)
 def get_aircraft():
     conn = get_db_connection()
     try:
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute("""
-                SELECT id, 
-                tail_number, 
-                model, 
-                manufacturer, 
-                status, 
-                total_hours, 
-                total_cycles, 
-                last_inspection
+                SELECT id, tail_number, model, manufacturer, status,
+                       total_hours, total_cycles, last_inspection
                 FROM aircraft
                 ORDER BY id;
             """)
@@ -68,22 +92,18 @@ def get_aircraft():
     finally:
         conn.close()
 
-# --- Maintenance Tasks ---
+# -----------------
+# Maintenance Tasks
+# -----------------
 @api.route("/tasks", strict_slashes=False)
 def get_tasks():
     conn = get_db_connection()
     try:
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute("""
-                SELECT t.id, 
-                a.tail_number, 
-                t.task_type, 
-                t.description, 
-                t.status, 
-                t.priority,
-                t.scheduled_date, 
-                t.completed_date, 
-                t.mechanic_name
+                SELECT t.id, a.tail_number, t.task_type, t.description,
+                       t.status, t.priority, t.scheduled_date, t.completed_date,
+                       t.mechanic_name
                 FROM maintenance_tasks t
                 JOIN aircraft a ON t.aircraft_id = a.id
                 ORDER BY t.scheduled_date;
@@ -93,45 +113,17 @@ def get_tasks():
     finally:
         conn.close()
 
-# --- Parts Inventory ---
-@api.route("/items")
-def get_items():
-    conn = get_db_connection()
-    try:
-        with conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute("""
-                SELECT id, 
-                part_number, 
-                part_name, 
-                part_category, 
-                quantity, 
-                minimum_quantity,
-                unit_price, 
-                location, 
-                expiry_date
-                FROM parts_inventory
-                ORDER BY id;
-            """)
-            rows = cur.fetchall()
-            return jsonify({"items": rows})
-    finally:
-        conn.close()
-
-# --- Maintenance Logs ---
+# -----------------
+# Maintenance Logs
+# -----------------
 @api.route("/logs")
 def get_logs():
     conn = get_db_connection()
     try:
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute("""
-                SELECT l.id, 
-                a.tail_number, 
-                t.task_type, 
-                l.log_date, 
-                l.description, 
-                l.log_type,
-                l.hours_recorded, 
-                l.mechanic_signature
+                SELECT l.id, a.tail_number, t.task_type, l.log_date, l.description,
+                       l.log_type, l.hours_recorded, l.mechanic_signature
                 FROM maintenance_logs l
                 JOIN aircraft a ON l.aircraft_id = a.id
                 LEFT JOIN maintenance_tasks t ON l.task_id = t.id
@@ -142,7 +134,9 @@ def get_logs():
     finally:
         conn.close()
 
-# --- Global Error Handler ---
+# -----------------
+# Global Error Handler
+# -----------------
 @api.errorhandler(Exception)
 def handle_error(e):
     return jsonify({"error": str(e)}), 500
