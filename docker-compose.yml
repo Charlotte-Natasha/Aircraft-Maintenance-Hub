@@ -20,8 +20,9 @@ services:
       retries: 5
 
   backend:
-    build: ./backend
     container_name: aircraft_backend
+    image: aircraft_backend:latest
+    build: ./backend
     env_file:
       - ./backend/.env
     environment:
@@ -46,8 +47,9 @@ services:
       retries: 5
 
   frontend:
-    build: ./frontend
     container_name: aircraft_frontend
+    image: aircraft_frontend:latest
+    build: ./frontend
     ports:
       - "3000:80"
     depends_on:
